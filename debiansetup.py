@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-'''Quick Debian setup. Run as root!'''
+'''Quick Debian setup.'''
 
 import os
 
