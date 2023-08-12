@@ -12,12 +12,13 @@ PROGRAMS = [
 
 def install(desired_programs: list):
 	for program in desired_programs:
-		os.system(f"sudo apt install {program}")
+		os.system(f"sudo -y apt install {program}")
 
 def ufw_setup():
 	os.system('sudo ufw allow ssh')
 	os.system('sudo ufw allow syncthing')
-	os.system('sudo ufw reload')
+	os.system('sudo ufw enable')
+    os.system('sudo ufw reload')
 
 def syncthing_setup():
 	os.system('syncthing')
