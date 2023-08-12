@@ -1,0 +1,22 @@
+steps
+
+1. install Debian (include ssh)
+2. Update /etc/apt/sources.list 
+    - add "main contrib non-free non-free-firmware" to end of source links
+3. sudo apt update && sudo apt upgrade
+4. packages to install:
+	- ufw (allow ssh, syncthing, and port number for syncthing GUI)
+	- vbetool (if using laptop. sudo vbetool dpms off to turn off screen
+	- network-manager
+	- htop
+	- fail2ban
+	- syncthing (then run syncthing command)
+	- tmux
+5. edit various configs
+	- /etc/network/interfaces, to set static ip
+	- /home/{user}/.config/Syncthing/config.xml, to change GUI address
+	- /etc/apt/sources.list, add non-free and non-free-firmware
+        - /etc/systemd/logind.conf, change "HandleLidSwitch" to equal "ignore" and UNCOMMENT
+        - /etc/fail2ban/jail.local, edit the "ignoreip" to include your own, edit "backup" to equal "systemd"
+6. sudo systemctl enable syncthing@{user}.service, to enable syncthing on startup
+7. sudo systemctl restart fail2ban, sudo systemctl status fail2ban
