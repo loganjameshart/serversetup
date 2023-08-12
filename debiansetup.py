@@ -5,7 +5,7 @@ import os
 
 USER = os.getlogin()
 PROGRAMS = [
-	'ufw', 'vbetool', 'network-manager', 'htop', 'fail2ban', 'syncthing', 'tmux'
+	'ufw', 'vbetool', 'network-manager', 'htop', 'fail2ban', 'syncthing', 'tmux', 'aptitude'
 	]
 
 
