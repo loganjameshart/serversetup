@@ -4,6 +4,7 @@
 import os
 
 USER = os.getlogin()
+
 PROGRAMS = [
 	'ufw', 'vbetool', 'network-manager', 'htop', 'fail2ban', 'syncthing', 'tmux', 'aptitude'
 	]
@@ -17,7 +18,7 @@ def install(desired_programs: list):
 	print('\n>>> Installing programs...\n')
 	for program in desired_programs:
 		print(f'\n>>> Installing {program}...\n')
-		os.system(f"sudo -y apt install {program}")
+		os.system(f"sudo apt -y install {program}")
 
 def ufw_setup():
 	os.system('sudo ufw allow ssh')
