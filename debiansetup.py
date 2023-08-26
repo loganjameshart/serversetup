@@ -1,36 +1,63 @@
 #! /usr/bin/env python3
-'''Quick Debian setup.'''
+"""
+About: Quick Debian server setup.
+Author: Logan Hart
+
+"""
 
 import os
+import subprocess
 
 USER = os.getlogin()
-
 PROGRAMS = [
-	'ufw', 'vbetool', 'network-manager', 'htop', 'fail2ban', 'syncthing', 'tmux', 'aptitude'
-	]
+    "black",
+    "ufw",
+    "vbetool",
+    "network-manager",
+    "htop",
+    "fail2ban",
+    "syncthing",
+    "tmux",
+    "aptitude",
+    "python3-pip",
+]
 
 
-def update():
-	print('\n>>> Updating and upgrading packages...\n')
-	os.system('sudo apt -y update && sudo apt -y upgrade')
+def update() -> None:
+    """Updates package sources and initiates upgrade."""
 
-def install(desired_programs: list):
-	print('\n>>> Installing programs...\n')
-	for program in desired_programs:
-		print(f'\n>>> Installing {program}...\n')
-		os.system(f"sudo apt -y install {program}")
+    print("\n>>> Updating and upgrading packages...\n")
+    subprocess.run("sudo apt -y update", shell=True)
+    subprocess.run("sudo apt -y upgrade", shell=True)
 
-def ufw_setup():
-	os.system('sudo ufw allow ssh')
-	os.system('sudo ufw allow syncthing')
-	os.system('sudo ufw enable')
-	os.system('sudo ufw reload')
+
+def install(desired_programs: list) -> None:
+    """Install requested packages using apt."""
+
+    print("\n>>> Installing programs...\n")
+    for program in desired_programs:
+        print(f"\n>>> Installing {program}...\n")
+        subprocess.run(f"sudo apt -y install {program}", shell=True)
+
+
+def ufw_setup() -> None:
+    """Creates firewall rules for necessary program sockets."""
+
+    subprocess.run("sudo ufw allow ssh", shell=True)
+    subprocess.run("sudo ufw allow syncthing", shell=True)
+    subprocess.run("sudo ufw enable", shell=True)
+    subprocess.run("sudo ufw reload", shell=True)
+
 
 def syncthing_setup():
-	os.system(f'sudo systemctl enable syncthing@{USER}.service')
+    """Enables Syncthing."""
 
-if __name__ == '__main__':
-	update()
-	install(PROGRAMS)
-	ufw_setup()
-	syncthing_setup()
+    subprocess.run(f"sudo systemctl enable syncthing@{USER}.service", shell=True)
+
+
+if __name__ == "__main__":
+    update()
+    install(PROGRAMS)
+    syncthing_setup()
+    subprocess.run("sudo apt autoremove", shell=True)
+    ufw_setup()  # firewall reloads last in case of SSH disruption
