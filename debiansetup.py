@@ -1,11 +1,13 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 """
 About: Quick Debian server setup.
 Author: Logan Hart
 """
 
+import os
 import subprocess
 
+USER = os.getlogin()
 PROGRAMS = [
     "black",
     "ufw",
@@ -18,11 +20,34 @@ PROGRAMS = [
     "python3-pip",
 ]
 
+NANO_CONFIG = ["set tabsize 4\n", "set tabstospaces"]
+
+APT_CONFIG = [
+    "deb http://deb.debian.org/debian/ bookworm main non-free-firmware non-free\n",
+    "deb-src http://deb.debian.org/debian/ bookworm main non-free-firmware non-free\n",
+    "\n",
+    "deb http://security.debian.org/debian-security bookworm-security main non-free-firmware\n",
+    "deb-src http://security.debian.org/debian-security bookworm-security main non-free-firmware\n",
+    "\n",
+    "# bookworm-updates, to get updates before a point release is made;\n",
+    "# see https://www.debian.org/doc/manuals/debian-reference/ch02.en.html_updates_and_backports\n",
+    "deb http://deb.debian.org/debian/ bookworm-updates main non-free-firmware\n",
+    "deb-src http://deb.debian.org/debian/ bookworm-updates main non-free-firmware\n",
+    "\n",
+    "# This system was installed using small removable media\n",
+    "# (e.g. netinst, live or single CD). The matching 'deb cdrom'\n",
+    "# entries were disabled at the end of the installation process.\n",
+    "# For information about how to configure apt package sources,\n",
+    "# see the sources.list(5) manual.\n"
+]
+
 
 def update_packages() -> None:
     """Updates package sources and initiates upgrade."""
 
     print("\n>>> Updating and upgrading packages...\n")
+    with open("/etc/apt/sources.list", "w") as apt_config_file:
+        apt_config_file.writelines(APT_CONFIG)
     subprocess.run(["sudo", "apt", "-y", "update"])
     subprocess.run(["sudo", "apt", "-y", "upgrade"])
 
@@ -30,7 +55,7 @@ def update_packages() -> None:
 def install_programs(desired_programs: list) -> None:
     """Install requested packages using apt."""
 
-    print("\n>>> Installing programs...\n")
+    print("\n>>> Installing programs...")
     for program in desired_programs:
         print(f"\n>>> Installing {program}...\n")
         subprocess.run(["sudo", "apt", "-y", "install", program])
@@ -45,8 +70,15 @@ def setup_firewall() -> None:
     subprocess.run(["sudo", "ufw", "reload"])
 
 
+def nano_config() -> None:
+    print("\n>>> Updating Nano config file...\n")
+    with open(f"/home/{USER}/.nanorc", "w") as config_file:
+        config_file.writelines(NANO_CONFIG)
+
+
 if __name__ == "__main__":
     update_packages()
     install_programs(PROGRAMS)
     subprocess.run(["sudo", "apt", "autoremove"])
-    firewall_setup()  # firewall reloads last in case of SSH disruption
+    nano_config()
+    setup_firewall()  # firewall reloads last in case of SSH disruption
