@@ -4,10 +4,8 @@ About: Quick Debian server setup.
 Author: Logan Hart
 """
 
-import os
 import subprocess
 
-USER = os.getlogin()
 PROGRAMS = [
     "black",
     "ufw",
@@ -21,7 +19,7 @@ PROGRAMS = [
 ]
 
 
-def update() -> None:
+def update_packages() -> None:
     """Updates package sources and initiates upgrade."""
 
     print("\n>>> Updating and upgrading packages...\n")
@@ -29,7 +27,7 @@ def update() -> None:
     subprocess.run(["sudo", "apt", "-y", "upgrade"])
 
 
-def install(desired_programs: list) -> None:
+def install_programs(desired_programs: list) -> None:
     """Install requested packages using apt."""
 
     print("\n>>> Installing programs...\n")
@@ -38,7 +36,7 @@ def install(desired_programs: list) -> None:
         subprocess.run(["sudo", "apt", "-y", "install", program])
 
 
-def ufw_setup() -> None:
+def setup_firewall() -> None:
     """Creates firewall rules for necessary program sockets."""
 
     print(">>> Updating firewall...\n")
