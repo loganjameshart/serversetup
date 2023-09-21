@@ -15,7 +15,6 @@ PROGRAMS = [
     "network-manager",
     "htop",
     "fail2ban",
-    "syncthing",
     "tmux",
     "aptitude",
     "python3-pip",
@@ -41,20 +40,11 @@ def install(desired_programs: list) -> None:
 
 def ufw_setup() -> None:
     """Creates firewall rules for necessary program sockets."""
-    
+
     print(">>> Updating firewall...\n")
     subprocess.run(["sudo", "ufw", "allow", "ssh"])
-    subprocess.run(["sudo", "ufw", "allow", "syncthing"])
     subprocess.run(["sudo", "ufw", "enable"])
     subprocess.run(["sudo", "ufw", "reload"])
-
-
-def syncthing_setup():
-    """Enables Syncthing."""
-
-    subprocess.run(
-        ["sudo", "systemctl", "enable", f"syncthing@{USER}.service"],
-    )
 
 
 if __name__ == "__main__":
