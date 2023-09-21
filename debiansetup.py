@@ -40,15 +40,19 @@ APT_CONFIG = [
     "# (e.g. netinst, live or single CD). The matching 'deb cdrom'\n",
     "# entries were disabled at the end of the installation process.\n",
     "# For information about how to configure apt package sources,\n",
-    "# see the sources.list(5) manual.\n"
+    "# see the sources.list(5) manual.\n",
 ]
 
+
 def backup_file(file_path: str) -> None:
+    """Backs up a file to the home directory."""
+
     file_name = Path(file_path).name
     with open(file_path) as original_file:
         backup_data = original_file.read()
-    with open(f"/home/{USER}/{file_name}.bak","w") as backup_file:
+    with open(f"/home/{USER}/{file_name}.bak", "w") as backup_file:
         backup_file.write(backup_data)
+
 
 def update_packages() -> None:
     """Updates package sources and initiates upgrade."""
