@@ -6,6 +6,7 @@ Author: Logan Hart
 
 import os
 import subprocess
+import shutil
 from pathlib import Path
 
 USER = os.getlogin()
@@ -24,23 +25,11 @@ PROGRAMS = [
 
 NANO_CONFIG = ["set tabsize 4\n", "set tabstospaces"]
 
+# I never compile from source, so I've removed those source links'
 APT_CONFIG = [
     "deb http://deb.debian.org/debian/ bookworm main non-free-firmware non-free\n",
-    "deb-src http://deb.debian.org/debian/ bookworm main non-free-firmware non-free\n",
-    "\n",
     "deb http://security.debian.org/debian-security bookworm-security main non-free-firmware\n",
-    "deb-src http://security.debian.org/debian-security bookworm-security main non-free-firmware\n",
-    "\n",
-    "# bookworm-updates, to get updates before a point release is made;\n",
-    "# see https://www.debian.org/doc/manuals/debian-reference/ch02.en.html_updates_and_backports\n",
-    "deb http://deb.debian.org/debian/ bookworm-updates main non-free-firmware\n",
-    "deb-src http://deb.debian.org/debian/ bookworm-updates main non-free-firmware\n",
-    "\n",
-    "# This system was installed using small removable media\n",
-    "# (e.g. netinst, live or single CD). The matching 'deb cdrom'\n",
-    "# entries were disabled at the end of the installation process.\n",
-    "# For information about how to configure apt package sources,\n",
-    "# see the sources.list(5) manual.\n",
+    "deb http://deb.debian.org/debian/ bookworm-updates main non-free-firmware\n"
 ]
 
 
@@ -48,10 +37,7 @@ def backup_file(file_path: str) -> None:
     """Backs up a file to the home directory."""
 
     file_name = Path(file_path).name
-    with open(file_path) as original_file:
-        backup_data = original_file.read()
-    with open(f"/home/{USER}/{file_name}.bak", "w") as backup_file:
-        backup_file.write(backup_data)
+    shutil.copy2(file_path, f"/home/{USER}/{file_name}.bak")
 
 
 def update_packages() -> None:
