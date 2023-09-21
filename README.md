@@ -4,10 +4,6 @@
 
 This Python script is designed to simplify the process of setting up a Debian server by automating various tasks. It updates package sources, installs essential programs, configures the Nano text editor, and sets up a basic firewall.
 
-## Author
-
-- Author: Logan Hart
-
 ## Usage
 
 1. **Requirements**: Ensure you have Python 3 installed on your Debian system (although it's usually installed by default).
