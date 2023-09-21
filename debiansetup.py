@@ -46,7 +46,7 @@ def setup_firewall() -> None:
 
 
 if __name__ == "__main__":
-    update()
-    install(PROGRAMS)
+    update_packages()
+    install_programs(PROGRAMS)
     subprocess.run(["sudo", "apt", "autoremove"])
-    ufw_setup()  # firewall reloads last in case of SSH disruption
+    firewall_setup()  # firewall reloads last in case of SSH disruption
