@@ -50,6 +50,5 @@ def ufw_setup() -> None:
 if __name__ == "__main__":
     update()
     install(PROGRAMS)
-    syncthing_setup()
     subprocess.run(["sudo", "apt", "autoremove"])
     ufw_setup()  # firewall reloads last in case of SSH disruption
