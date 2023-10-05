@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-About: Quick Debian server setup.
+About: Quick Debian server setup. Run with sudo privileges.
 Author: Logan Hart
 """
 
@@ -14,18 +14,20 @@ APT_SOURCES = "/etc/apt/sources.list"
 PROGRAMS = [
     "black",
     "ufw",
-    "vbetool",
+#    "vbetool",
     "network-manager",
     "htop",
     "fail2ban",
     "tmux",
     "aptitude",
     "python3-pip",
+    "gcc",
+    "build-essential"
 ]
 
 NANO_CONFIG = ["set tabsize 4\n", "set tabstospaces"]
 
-# I never compile from source, so I've removed those source links'
+# I never compile from source, so I remove those source links
 APT_CONFIG = [
     "deb http://deb.debian.org/debian/ bookworm main non-free-firmware non-free\n",
     "deb http://security.debian.org/debian-security bookworm-security main non-free-firmware\n",
@@ -71,6 +73,8 @@ def setup_firewall() -> None:
 
 
 def nano_config() -> None:
+    """Edit Nano editor config file to use tab as four spaces."""
+
     print("\n>>> Updating Nano config file...\n")
     with open(f"/home/{USER}/.nanorc", "w") as config_file:
         config_file.writelines(NANO_CONFIG)
