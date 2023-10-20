@@ -17,12 +17,16 @@ PROGRAMS = [
 #    "vbetool",
     "network-manager",
     "htop",
-    "fail2ban",
+#    "fail2ban",
     "tmux",
     "aptitude",
     "python3-pip",
     "gcc",
-    "build-essential"
+    "build-essential",
+    "firmware-b43-installer",
+    "w3m",
+    "tty-clock",
+    "neofetch"
 ]
 
 NANO_CONFIG = ["set tabsize 4\n", "set tabstospaces"]
@@ -39,6 +43,7 @@ def backup_file(file_path: str) -> None:
     """Backs up a file to the home directory."""
 
     file_name = Path(file_path).name
+    print(f"\n>>> Backing up {file_path}...\n")
     shutil.copy2(file_path, f"/home/{USER}/{file_name}.bak")
 
 
@@ -66,7 +71,7 @@ def install_programs(desired_programs: list) -> None:
 def setup_firewall() -> None:
     """Creates firewall rules for necessary program sockets."""
 
-    print(">>> Updating firewall...\n")
+    print("\n>>> Updating firewall...\n")
     subprocess.run(["sudo", "ufw", "allow", "ssh"])
     subprocess.run(["sudo", "ufw", "enable"])
     subprocess.run(["sudo", "ufw", "reload"])
