@@ -13,6 +13,7 @@ USER = os.getlogin()
 APT_SOURCES = "/etc/apt/sources.list"
 PROGRAMS = [
     "black",
+    "git",
     "ufw",
 #    "vbetool",
     "network-manager",
@@ -33,9 +34,9 @@ NANO_CONFIG = ["set tabsize 4\n", "set tabstospaces"]
 
 # I never compile from source, so I remove those source links
 APT_CONFIG = [
-    "deb http://deb.debian.org/debian/ bookworm main non-free-firmware non-free\n",
-    "deb http://security.debian.org/debian-security bookworm-security main non-free-firmware\n",
-    "deb http://deb.debian.org/debian/ bookworm-updates main non-free-firmware\n"
+    "deb http://deb.debian.org/debian/ bookworm main non-free-firmware non-free contrib\n",
+    "deb http://security.debian.org/debian-security bookworm-security main non-free-firmware contrib\n",
+    "deb http://deb.debian.org/debian/ bookworm-updates main non-free-firmware contrib\n"
 ]
 
 
@@ -68,6 +69,14 @@ def install_programs(desired_programs: list) -> None:
         subprocess.run(["sudo", "apt", "-y", "install", program])
 
 
+def nano_config() -> None:
+    """Edit Nano editor config file to use tab as four spaces."""
+
+    print("\n>>> Updating Nano config file...\n")
+    with open(f"/home/{USER}/.nanorc", "w") as config_file:
+        config_file.writelines(NANO_CONFIG)
+
+
 def setup_firewall() -> None:
     """Creates firewall rules for necessary program sockets."""
 
@@ -76,13 +85,9 @@ def setup_firewall() -> None:
     subprocess.run(["sudo", "ufw", "enable"])
     subprocess.run(["sudo", "ufw", "reload"])
 
+def tmux_config() -> None:
+    """"""
 
-def nano_config() -> None:
-    """Edit Nano editor config file to use tab as four spaces."""
-
-    print("\n>>> Updating Nano config file...\n")
-    with open(f"/home/{USER}/.nanorc", "w") as config_file:
-        config_file.writelines(NANO_CONFIG)
 
 
 if __name__ == "__main__":
